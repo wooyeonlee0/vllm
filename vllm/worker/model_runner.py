@@ -1005,9 +1005,10 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         )
 
         logger.info(f"READY, {self.is_driver_worker=}")
+        logger.info(f"READY, {self.is_driver_worker=}")
 
-        logger.info(f"TEST, {hidden_states=}")
         logger.info(f"TEST, {model_input.sampling_metadata=}")
+        logger.info(f"TEST, {hidden_states=}")
 
         logger.info(f"COMPUTE LOGITS START, {hidden_states=}, {model_input.sampling_metadata}")
         # Compute the logits.
