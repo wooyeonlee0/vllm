@@ -30,7 +30,7 @@ def main():
 
         # Artificially limit the draft model max model len; this forces vLLM
         # to skip speculation once the sequences grow beyond 32-k tokens.
-        "speculative_max_model_len": 32,
+        #"speculative_max_model_len": 32,
     }
 
     request = None
