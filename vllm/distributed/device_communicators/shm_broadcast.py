@@ -207,7 +207,7 @@ class ShmRingBufferIO:
                     # try to read the next block
                     self.current_idx = (self.current_idx +
                                         1) % self.buffer.max_chunks
-                    logger.info(f"{self.current_idx=}, {self.buffer.max_chunks}")
+                    #logger.info(f"{self.current_idx=}, {self.buffer.max_chunks}")
                     if self.current_idx == start_index:
                         # no block found
                         if time.time(
