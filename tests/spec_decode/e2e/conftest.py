@@ -158,7 +158,7 @@ def create_llm_generator(baseline_or_test, request, common_llm_kwargs,
         **per_test_common_llm_kwargs,
         **distinct_llm_kwargs,
     }
-    test_name = request.node.name
+    test_name = "TEST" # request.node.name
     print("test_name:", test_name)
     print("llm_kwargs:", kwargs)
 
