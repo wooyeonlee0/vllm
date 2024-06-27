@@ -1004,9 +1004,14 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
             **multi_modal_kwargs,
         )
 
+        logger.info("READY")
+
         # Compute the logits.
         logits = self.model.compute_logits(hidden_states,
                                            model_input.sampling_metadata)
+
+
+        logger.info("COMPUTE LOGITS DONE")
 
         # Only perform sampling in the driver worker.
         if not self.is_driver_worker:
@@ -1018,6 +1023,8 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
             sampling_metadata=model_input.sampling_metadata,
         )
 
+        logger.info("SAMPLE DONE")
+
         if self.return_hidden_states:
             # we only need to pass hidden states of most recent token
             if model_input.is_prompt:
@@ -1025,6 +1032,8 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
                 hidden_states = hidden_states.index_select(
                     0, model_input.sampling_metadata.selected_token_indices)
             output.hidden_states = hidden_states
+
+        logger.info("INDEX SELETEC DONE")
 
         return output
 
