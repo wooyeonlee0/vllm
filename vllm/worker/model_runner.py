@@ -978,7 +978,6 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         model_input: ModelInputForGPUWithSamplingMetadata,
         kv_caches: List[torch.Tensor],
     ) -> SamplerOutput:
-        logger.info(f"TEST!!, {model_input.sampling_metadata=}")
         if self.lora_config:
             assert model_input.lora_requests is not None
             assert model_input.lora_mapping is not None
