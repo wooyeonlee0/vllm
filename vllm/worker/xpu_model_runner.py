@@ -222,8 +222,10 @@ class XPUModelRunner(ModelRunnerBase[ModelInputForXPU]):
                 sampling_metadata.selected_token_indices,
             }
             metadata_dict.update(attn_metadata.asdict_zerocopy())
+            logger.info("BROADCAST_TENSOR_DICT")
             broadcast_tensor_dict(metadata_dict, src=0)
         else:
+            logger.info("BROADCAST_TENSOR_DICT")
             metadata_dict = broadcast_tensor_dict(src=0)
             input_tokens = metadata_dict.pop("input_tokens")
             input_positions = metadata_dict.pop("input_positions")
