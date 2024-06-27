@@ -267,6 +267,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
             # and it stops the loop when the driver broadcasts an empty input.
             # Send an empty input to notify all other workers to stop their
             # execution loop.
+            logger.info(f"BROADCAST_TENSOR_DICT. {self.rank=}, {self._driver_rank}")
             broadcast_tensor_dict({}, src=0)
             return []
 
@@ -284,6 +285,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
             num_lookahead_slots=num_lookahead_slots,
             disable_all_speculation=disable_all_speculation,
         )
+        logger.info(f"BROADCAST_TENSOR_DICT. {self.rank=}, {self._driver_rank}")
         broadcast_tensor_dict(broadcast_dict, src=self._driver_rank)
 
         assert execute_model_req.seq_group_metadata_list is not None, (
@@ -381,6 +383,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         """
         assert self.rank != self._driver_rank
 
+        logger.info(f"BROADCAST_TENSOR_DICT. {self.rank=}, {self._driver_rank}")
         data = broadcast_tensor_dict(src=self._driver_rank)
         if not data:
             return False
