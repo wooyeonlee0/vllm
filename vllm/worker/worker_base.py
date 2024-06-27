@@ -220,6 +220,7 @@ class LocalOrDistributedWorkerBase(WorkerBase):
                     # broadcast_tensor_dict, and it stops the loop when the
                     # driver broadcasts an empty input. Send an empty input to
                     # notify all other workers to stop their execution loop.
+                    logger.info(f"BROADCAST_TENSOR_DICT.")
                     broadcast_tensor_dict({}, src=0)
                 return None
 
@@ -233,9 +234,11 @@ class LocalOrDistributedWorkerBase(WorkerBase):
                 broadcast_data = worker_input.as_broadcastable_tensor_dict()
                 broadcast_data.update(
                     model_input.as_broadcastable_tensor_dict())
+                logger.info(f"BROADCAST_TENSOR_DICT.")
                 broadcast_tensor_dict(broadcast_data, src=0)
         else:
             assert self.do_metadata_broadcast
+            logger.info(f"BROADCAST_TENSOR_DICT.")
             broadcast_data = broadcast_tensor_dict(src=0)
             if not broadcast_data:
                 return None
