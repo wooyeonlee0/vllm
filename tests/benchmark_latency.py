@@ -1,6 +1,6 @@
 """Benchmark the latency of processing a single batch of requests."""
-from e2e.conftest import run_greedy_equality_correctness_test
-from e2e.conftest import create_llm_generator
+from spec_decode.e2e.conftest import run_greedy_equality_correctness_test
+from spec_decode.e2e.conftest import create_llm_generator
 
 
 def main():
