@@ -4,7 +4,7 @@ from spec_decode.e2e.conftest import create_llm_generator
 
 
 def main():
-    common_llm_kwargs = [{
+    common_llm_kwargs = {
         "model": "JackFram/llama-160m",
 
         # Skip cuda graph recording for fast test.
@@ -20,21 +20,18 @@ def main():
         # cleaned up properly, and its server host thread leaks, causing the
         # second run of the test to fail with internal NCCL error.
         "use_async": True,
-    }]
+    }
 
-    per_test_common_llm_kwargs = [{}]
-    baseline_llm_kwargs = [{}]
-    test_llm_kwargs = [
-        {
-            "speculative_model": "JackFram/llama-68m",
-            "num_speculative_tokens": 5,
+    per_test_common_llm_kwargs = {}
+    baseline_llm_kwargs = {}
+    test_llm_kwargs = {
+        "speculative_model": "JackFram/llama-68m",
+        "num_speculative_tokens": 5,
 
-            # Artificially limit the draft model max model len; this forces vLLM
-            # to skip speculation once the sequences grow beyond 32-k tokens.
-            "speculative_max_model_len": 32,
-
-        },
-    ]
+        # Artificially limit the draft model max model len; this forces vLLM
+        # to skip speculation once the sequences grow beyond 32-k tokens.
+        "speculative_max_model_len": 32,
+    }
 
     request = None
     batch_size = 8
@@ -47,10 +44,10 @@ def main():
                                 baseline_llm_kwargs, seed)
 
 
-    test_llm_generator = create_llm_generator("baseline", request,
+    test_llm_generator = create_llm_generator("test", request,
                                               common_llm_kwargs,
                                 per_test_common_llm_kwargs,
-                                baseline_llm_kwargs, seed)
+                                test_llm_kwargs, seed)
 
 
     print("TEST")
