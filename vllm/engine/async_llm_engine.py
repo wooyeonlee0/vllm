@@ -681,6 +681,7 @@ class AsyncLLMEngine:
             >>> # Process and return the final output
             >>> ...
         """
+        logger.info(f"{request_id=}, {inputs}")
         async for output in self._process_request(
                 request_id,
                 inputs,
@@ -779,6 +780,9 @@ class AsyncLLMEngine:
         """Common logic to process requests with SamplingParams or
         PoolingParams."""
         arrival_time = time.time()
+
+
+        logger.info(f"{request_id=}, {inputs=}")
 
         stream = await self.add_request(
             request_id,
