@@ -79,7 +79,7 @@ class BatchExpansionTop1Scorer(SpeculativeScorer):
 
         print(f"{execute_model_req.seq_group_metadata_list=}")
         print(f"{proposal_token_ids_list_without_skips=}")
-        print(f"{proposal_lens_list}")
+        print(f"{proposal_lens_list=}")
         print(f"{target_seq_group_metadata_list=}")
 
         target_sampler_output = self._scorer_worker.execute_model(
@@ -87,6 +87,8 @@ class BatchExpansionTop1Scorer(SpeculativeScorer):
                 seq_group_metadata_list=target_seq_group_metadata_list))
         assert len(target_sampler_output) == 1, "expected single-step output"
         target_sampler_output = target_sampler_output[0]
+
+        print(f"EXECUTE DONE. {target_sampler_output=}")
 
         all_tokens, all_probs, spec_logprobs = self._contract_batch(
             contracted_bs=len(execute_model_req.seq_group_metadata_list),

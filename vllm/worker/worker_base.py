@@ -248,8 +248,12 @@ class LocalOrDistributedWorkerBase(WorkerBase):
             model_input = (
                 self.model_runner.
                 make_model_input_from_broadcasted_tensor_dict(broadcast_data))
+ 
+        logger.info("BROADCAST DONE")
 
         self.execute_worker(worker_input)
+
+        logger.info("EXECUTE_WORKER DONE")
 
         # If there is no input, we don't need to execute the model.
         if worker_input.num_seq_groups == 0:
@@ -258,6 +262,8 @@ class LocalOrDistributedWorkerBase(WorkerBase):
         output = self.model_runner.execute_model(model_input, self.kv_cache)
         # Worker only supports single-step execution. Wrap the output in a
         # list to conform to interface.
+
+        logger.info("EXECUTE MODEL DONE")
         return [output]
 
 
