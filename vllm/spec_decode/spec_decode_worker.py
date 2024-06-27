@@ -429,6 +429,8 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
             proposals,
         )
 
+        logger.info("DECODING STEP. VERIFY")
+
         accepted_token_ids, target_logprobs = self._verify_tokens(
             execute_model_req.seq_group_metadata_list, proposal_scores,
             proposals, execute_model_req.num_lookahead_slots)
