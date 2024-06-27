@@ -238,7 +238,7 @@ def create_llm_generator(baseline_or_test, request, common_llm_kwargs,
         **per_test_common_llm_kwargs,
         **distinct_llm_kwargs,
     }
-    test_name = "TEST" # request.node.name
+    test_name = baseline_or_test # request.node.name
     print("test_name:", test_name)
     print("llm_kwargs:", kwargs)
 
@@ -347,14 +347,17 @@ def run_greedy_equality_correctness_test(baseline_llm_generator,
         temperature=temperature,
     )
 
+    print("[[[1. RUN TEST CASE]]]")
     print("prompts: ", prompts)
     print("sampling_params: ", sampling_params)
-    print("run test case")
 
     spec_batch_tokens, spec_batch_token_ids = get_output_from_llm_generator(
         test_llm_generator, prompts, sampling_params)
 
-    print("run baseline case")
+    print("[[[2. Run BASELINE CASE]]]")
+    print("prompts: ", prompts)
+    print("sampling_params: ", sampling_params)
+
     (baseline_batch_tokens,
      baseline_batch_token_ids) = get_output_from_llm_generator(
          baseline_llm_generator, prompts, sampling_params)
