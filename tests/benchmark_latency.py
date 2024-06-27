@@ -12,7 +12,7 @@ def main():
 
         # Required for spec decode.
         "use_v2_block_manager": True,
-        "tensor_parallel_size": 4,
+        "tensor_parallel_size": 2,
 
         # Use AsyncLLM engine, so that the engine runs in its own process.
         # Otherwise, since vLLM does not follow true SPMD, the test runner
