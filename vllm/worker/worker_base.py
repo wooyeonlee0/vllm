@@ -255,6 +255,8 @@ class LocalOrDistributedWorkerBase(WorkerBase):
 
         logger.info("EXECUTE_WORKER DONE")
 
+        logger.info(f"model_input. {model_input=}")
+
         # If there is no input, we don't need to execute the model.
         if worker_input.num_seq_groups == 0:
             return []

@@ -1005,7 +1005,8 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         )
 
         logger.info(f"READY, {self.is_driver_worker=}")
-        logger.info(f"READY, {self.is_driver_worker=}")
+
+        logger.info(f"model_input, {model_input.is_prompt=}")
 
         logger.info(f"TEST, {model_input.sampling_metadata=}")
         logger.info(f"TEST, {hidden_states=}")
