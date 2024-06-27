@@ -111,6 +111,8 @@ class Top1Proposer(SpeculativeProposer):
             proposal_lens=proposal_lens,
         )
 
+        print(f"{proposals=}")
+
         return proposals
 
     def _split_by_proposal_len(
