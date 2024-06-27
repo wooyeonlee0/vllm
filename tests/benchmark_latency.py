@@ -53,6 +53,7 @@ def main():
                                 baseline_llm_kwargs, seed)
 
 
+    print("TEST")
 
 
 
@@ -61,3 +62,6 @@ def main():
                                          batch_size,
                                          max_output_len=output_len,
                                          force_output_len=True)
+
+if __name__ == '__main__':
+    main()
