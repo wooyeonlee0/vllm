@@ -1005,13 +1005,14 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         )
 
         logger.info("READY")
+        logger.info(f"READY {logits=}, {model_input.sampling_metadata=}")
 
         # Compute the logits.
         logits = self.model.compute_logits(hidden_states,
                                            model_input.sampling_metadata)
 
 
-        logger.info("COMPUTE LOGITS DONE")
+        logger.info(f"COMPUTE LOGITS DONE, {self.is_driver_worker=}")
 
         # Only perform sampling in the driver worker.
         if not self.is_driver_worker:
