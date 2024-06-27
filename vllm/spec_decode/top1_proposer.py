@@ -51,7 +51,7 @@ class Top1Proposer(SpeculativeProposer):
         proposal_len = execute_model_req.num_lookahead_slots
         seq_group_metadata_list = execute_model_req.seq_group_metadata_list
 
-        print(f"{execute_model_req.num_lookahead_slots=}")
+        print(f"{proposal_len=}")
 
         # Split speculative- and non-speculative- sequences.
         (
@@ -147,6 +147,7 @@ class Top1Proposer(SpeculativeProposer):
                 new_k = proposal_len
                 nonzero_proposal_len_seqs.append(seq_group_metadata)
                 nonzero_proposal_len_indices.append(i)
+            print(f"{seq_len=}, {proposal_len=}, {self.max_proposal_len=}")
             proposal_lens.append(new_k)
             seq_group_metadata.num_speculative_tokens = new_k
 

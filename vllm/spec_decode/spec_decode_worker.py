@@ -418,9 +418,12 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         execute_model_req.previous_hidden_states = self.previous_hidden_states
         self.previous_hidden_states = None
 
+        logger.info("DECODING STEP. PROPOSAL")
+
         # Generate proposals using draft worker.
         proposals = self.proposer_worker.get_spec_proposals(execute_model_req)
 
+        logger.info("DECODING STEP. SCORING")
         proposal_scores = self.scorer.score_proposals(
             execute_model_req,
             proposals,
