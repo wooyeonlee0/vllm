@@ -1017,6 +1017,8 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         if not self.is_driver_worker:
             return None
 
+        logger.info(f"Model.sample. {logits=}, {model_input.sampling_metadata=}")
+
         # Sample the next token.
         output: SamplerOutput = self.model.sample(
             logits=logits,
