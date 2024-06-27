@@ -5,14 +5,14 @@ if TYPE_CHECKING:
     VLLM_HOST_IP: str = ""
     VLLM_PORT: Optional[int] = None
     VLLM_USE_MODELSCOPE: bool = False
-    VLLM_RINGBUFFER_WARNING_INTERVAL: int = 60
+    VLLM_RINGBUFFER_WARNING_INTERVAL: int = 10
     VLLM_INSTANCE_ID: Optional[str] = None
     VLLM_NCCL_SO_PATH: Optional[str] = None
     LD_LIBRARY_PATH: Optional[str] = None
     VLLM_USE_TRITON_FLASH_ATTN: bool = False
     LOCAL_RANK: int = 0
     CUDA_VISIBLE_DEVICES: Optional[str] = None
-    VLLM_ENGINE_ITERATION_TIMEOUT_S: int = 60
+    VLLM_ENGINE_ITERATION_TIMEOUT_S: int = 30
     VLLM_API_KEY: Optional[str] = None
     S3_ACCESS_KEY_ID: Optional[str] = None
     S3_SECRET_ACCESS_KEY: Optional[str] = None

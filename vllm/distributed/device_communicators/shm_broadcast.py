@@ -207,10 +207,12 @@ class ShmRingBufferIO:
                     # try to read the next block
                     self.current_idx = (self.current_idx +
                                         1) % self.buffer.max_chunks
+                    logger.info(f"{self.current_idx=}, {self.buffer.max_chunks}")
                     if self.current_idx == start_index:
                         # no block found
                         if time.time(
                         ) - start_time > VLLM_RINGBUFFER_WARNING_INTERVAL * n_warning:  # noqa
+                            logger.info(f"{read_flag=}, {written_flag=}")
                             logger.warning(
                                 "No available block found in %s second. ",
                                 VLLM_RINGBUFFER_WARNING_INTERVAL)
@@ -250,9 +252,11 @@ class ShmRingBufferIO:
 
     def broadcast_object(self, obj=None):
         if self._is_writer:
+            logger.info("ENQUEUE")
             self.enqueue(obj)
             return obj
         else:
+            logger.info("DEQUEUE")
             return self.dequeue()
 
     def create_from_process_group(pg: ProcessGroup,

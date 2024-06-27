@@ -355,6 +355,7 @@ class GroupCoordinator:
             return obj
         if self.shm_broadcaster is not None:
             assert src == 0, "Shared memory broadcaster only supports src=0"
+            logger.info(f"BROADCAST: {src=}")
             return self.shm_broadcaster.broadcast_object(obj)
         if self.rank_in_group == src:
             torch.distributed.broadcast_object_list([obj],
