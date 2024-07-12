@@ -398,11 +398,14 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         updated, so they cannot enable spec decode in the rest decoding.
         """
         if not skip_proposer:
+            logger.info('skip_proposer')
             self.proposer_worker.execute_model(execute_model_req)
 
+        logger.info('scorer_worker.execute_model start')
         sampler_output = self.scorer_worker.execute_model(execute_model_req)
         assert len(sampler_output) == 1
         sampler_output = sampler_output[0]
+        logger.info('scorer_worker.execute_model end')
 
         # Store hidden states from target model execution.
         hidden_states = sampler_output.hidden_states
