@@ -308,7 +308,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
             # and it stops the loop when the driver broadcasts an empty input.
             # Send an empty input to notify all other workers to stop their
             # execution loop.
-            logger.info("CALL BROADCAST_TENSOR_DICT")
+            logger.info("CALL BROADCAST_TENSOR_DICT. driver empty loop")
             broadcast_tensor_dict({}, src=0)
             return []
 
@@ -400,7 +400,7 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         updated, so they cannot enable spec decode in the rest decoding.
         """
         if not skip_proposer:
-            logger.info('skip_proposer')
+            logger.info('do not skip_proposer')
             self.proposer_worker.execute_model(execute_model_req)
 
         logger.info('scorer_worker.execute_model start')

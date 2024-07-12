@@ -379,6 +379,7 @@ class MessageQueue:
     @contextmanager
     def acquire_read(self):
         assert self._is_local_reader, "Only readers can acquire read"
+        logger.info(f"acquire_read. {self.current_idx=}")
         start_time = time.monotonic()
         n_warning = 1
         while True:
