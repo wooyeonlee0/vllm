@@ -95,10 +95,8 @@ class Top1Proposer(SpeculativeProposer):
             # If no sequences can be speculated, set sampler output to None.
             maybe_sampler_output = None
             transposed = False
-
-        if maybe_sampler_output is None:
             logger.info("sampler output is None")
-            return None
+#            return None
 
         # Combine speculative- and non-speculative sequences into the same
         # representation.

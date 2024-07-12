@@ -347,6 +347,12 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         disable_speculation = num_lookahead_slots == 0 or len(
             execute_model_req.seq_group_metadata_list) == 0 or disable_all_speculation
 
+        if disable_all_speculation:
+            return self._run_no_spec(execute_model_req,
+                                skip_proposer=disable_all_speculation)
+        return self._run_speculative_decoding_step(execute_model_req,
+                                                   num_lookahead_slots)
+
         no_draft_tokens = False
         if not disable_speculation:
             output_list = self._run_speculative_decoding_step(execute_model_req,
@@ -474,8 +480,8 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         proposals = self.proposer_worker.get_spec_proposals(
             execute_model_req, self._seq_with_bonus_token_in_last_step)
 
-        if proposals is None:
-            return []
+        #if proposals is None:
+        #    return []
 
         proposal_scores = self.scorer.score_proposals(
             execute_model_req,
