@@ -168,7 +168,7 @@ class MessageQueue:
         self.n_local_reader = n_local_reader
         n_remote_reader = n_reader - n_local_reader
         self.n_remote_reader = n_remote_reader
-        logger.info(f"{n_local_reader=}, {n_remote_reader=}")
+        logger.info(f"{n_local_reader=}, {n_remote_reader=}, {local_reader_ranks=}")
 
         if connect_ip is None:
             connect_ip = get_ip()
@@ -280,7 +280,7 @@ class MessageQueue:
             self.remote_sync_socket.connect(
                 f"tcp://{handle.connect_ip}:{handle.remote_sync_port}")
 
-        logger.info(f"{self._is_local_reader=}, {self._is_remote_reader}")
+        logger.info(f"{self._is_local_reader=}, {self._is_remote_reader=}, {handle.local_reader_ranks=}")
 
         return self
 
@@ -322,6 +322,7 @@ class MessageQueue:
     @contextmanager
     def acquire_write(self):
         assert self._is_writer, "Only writers can acquire write"
+        logger.info(f"acquire_write. {self.current_idx=}")
         start_time = time.monotonic()
         n_warning = 1
         while True:
@@ -337,6 +338,8 @@ class MessageQueue:
                     # wait for a while
                     time.sleep(RINGBUFFER_SLEEP_INTERVAL)
 
+                    logger.info(f"acquire_write. {self.current_idx}")
+
                     # if we wait for a long time, we should warn the user
                     if time.monotonic(
                     ) - start_time > VLLM_RINGBUFFER_WARNING_INTERVAL * n_warning:  # noqa
@@ -349,6 +352,11 @@ class MessageQueue:
                 # found a block that is either
                 # (1) not written
                 # (2) read by all readers
+
+                written_flag = metadata_buffer[0]
+                read_flags = metadata_buffer[1:]
+                logger.info(f"{written_flag=}, {read_flags=}")
+                logger.info(f"{metadata_buffer=}")
 
                 # mark the block as not written
                 metadata_buffer[0] = 0
@@ -400,6 +408,12 @@ class MessageQueue:
                         n_warning += 1
 
                     continue
+
+                written_flag = metadata_buffer[0]
+                read_flags = metadata_buffer[1:]
+                logger.info(f"{written_flag=}, {read_flags=}")
+                logger.info(f"{metadata_buffer=}")
+
                 # found a block that is not read by this reader
                 # let caller read from the buffer
                 with self.buffer.get_data(self.current_idx) as buf:
