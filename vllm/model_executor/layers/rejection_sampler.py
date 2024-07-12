@@ -217,16 +217,19 @@ class RejectionSampler(SpecDecodeBaseSampler):
         # shape [batch_size, k, vocab_size]
         logger.info(f"{target_probs=}")
         logger.info(f"{draft_probs=}")
-        difference = target_probs - draft_probs
+        if target_probs.shape[0] == 0:
+            recovered_probs = target_probs
+        else:
+            difference = target_probs - draft_probs
 
-        # TODO(cade): Can we use logprobs instead of probs, and avoid the
-        # division-by-zero errors without introducing distribution drift?
+            # TODO(cade): Can we use logprobs instead of probs, and avoid the
+            # division-by-zero errors without introducing distribution drift?
 
-        # shape [batch_size, k, vocab_size]
-        f = torch.clamp(difference, min=self._smallest_positive_value)
+            # shape [batch_size, k, vocab_size]
+            f = torch.clamp(difference, min=self._smallest_positive_value)
 
-        # shape [batch_size, k, vocab_size]
-        recovered_probs = f / torch.sum(f, dim=-1).reshape(-1, k, 1)
+            # shape [batch_size, k, vocab_size]
+            recovered_probs = f / torch.sum(f, dim=-1).reshape(-1, k, 1)
 
         return recovered_probs
 
