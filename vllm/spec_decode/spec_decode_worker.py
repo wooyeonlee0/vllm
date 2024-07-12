@@ -342,14 +342,20 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         # 3. No request: There are no requests in the batch.
         # In any of these cases, the proposer and scorer workers
         # are called normally.
-        if num_lookahead_slots == 0 or len(
-                execute_model_req.seq_group_metadata_list
-        ) == 0 or disable_all_speculation:
-            return self._run_no_spec(execute_model_req,
-                                     skip_proposer=disable_all_speculation)
+        disable_speculation = num_lookahead_slots == 0 or len(
+            execute_model_req.seq_group_metadata_list) == 0 or disable_all_speculation
 
-        return self._run_speculative_decoding_step(execute_model_req,
+        if not disable_speculation:
+            output_list = self._run_speculative_decoding_step(execute_model_req,
                                                    num_lookahead_slots)
+            no_draft_tokens = len(output_list) == 0
+            if not no_draft_tokens:
+                return output_list
+            else:
+                logger.info("no draft tokens")
+
+        return self._run_no_spec(execute_model_req,
+                                skip_proposer=disable_all_speculation or no_draft_tokens)
 
     @torch.inference_mode()
     def start_worker_execution_loop(self) -> None:
@@ -460,6 +466,9 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         # Generate proposals using draft worker.
         proposals = self.proposer_worker.get_spec_proposals(
             execute_model_req, self._seq_with_bonus_token_in_last_step)
+
+        if proposals is None:
+            return []
 
         proposal_scores = self.scorer.score_proposals(
             execute_model_req,

@@ -98,6 +98,7 @@ class Top1Proposer(SpeculativeProposer):
 
         if maybe_sampler_output is None:
             logger.info("sampler output is None")
+            return None
 
         # Combine speculative- and non-speculative sequences into the same
         # representation.
