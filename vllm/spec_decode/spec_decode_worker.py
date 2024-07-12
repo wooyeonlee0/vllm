@@ -345,17 +345,18 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         disable_speculation = num_lookahead_slots == 0 or len(
             execute_model_req.seq_group_metadata_list) == 0 or disable_all_speculation
 
+        no_draft_tokens = False
         if not disable_speculation:
             output_list = self._run_speculative_decoding_step(execute_model_req,
                                                    num_lookahead_slots)
-            disable_speculation = len(output_list) == 0
-            if not disable_speculation:
+            no_draft_tokens = len(output_list) == 0
+            if not no_draft_tokens:
                 return output_list
             else:
                 logger.info("no draft tokens")
 
         return self._run_no_spec(execute_model_req,
-                                skip_proposer=disable_all_speculation or disable_speculation)
+                                skip_proposer=disable_all_speculation or no_draft_tokens)
 
     @torch.inference_mode()
     def start_worker_execution_loop(self) -> None:
