@@ -4,9 +4,11 @@ from typing import Tuple
 import torch
 import torch.jit
 
+from vllm.logger import init_logger
 from vllm.model_executor.layers.spec_decode_base_sampler import (
     SpecDecodeBaseSampler)
 
+logger = init_logger(__name__)
 
 class RejectionSampler(SpecDecodeBaseSampler):
     """Apply modified rejection sampling as described in "Accelerating Large
@@ -213,6 +215,8 @@ class RejectionSampler(SpecDecodeBaseSampler):
         _, k, _ = draft_probs.shape
 
         # shape [batch_size, k, vocab_size]
+        logger.info(f"{target_probs=}")
+        logger.info(f"{draft_probs=}")
         difference = target_probs - draft_probs
 
         # TODO(cade): Can we use logprobs instead of probs, and avoid the

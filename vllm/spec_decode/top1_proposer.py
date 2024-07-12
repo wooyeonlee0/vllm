@@ -115,6 +115,8 @@ class Top1Proposer(SpeculativeProposer):
             proposal_lens=proposal_lens,
         )
 
+        logger.info(f"{proposals=}")
+
         return proposals
 
     def _split_by_proposal_len(
@@ -244,6 +246,7 @@ class Top1Proposer(SpeculativeProposer):
                                                 dtype=torch.long,
                                                 device=self._device).expand(
                                                     len(proposal_lens))
+            logger.info(f"{proposal_tokens=}, {proposal_probs=}, {proposal_lens_tensor=}")
             return proposal_tokens, proposal_probs, proposal_lens_tensor
 
         sampler_output = maybe_sampler_output
