@@ -350,8 +350,12 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         if disable_all_speculation:
             return self._run_no_spec(execute_model_req,
                                 skip_proposer=disable_all_speculation)
-        return self._run_speculative_decoding_step(execute_model_req,
+        logger.info("spec step start")
+        output = self._run_speculative_decoding_step(execute_model_req,
                                                    num_lookahead_slots)
+        logger.info("spec step done")
+        exit -1
+        return output
 
         no_draft_tokens = False
         if not disable_speculation:
