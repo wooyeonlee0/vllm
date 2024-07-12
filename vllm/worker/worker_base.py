@@ -271,10 +271,12 @@ class LocalOrDistributedWorkerBase(WorkerBase):
         if worker_input.num_seq_groups == 0:
             return []
 
+        logger.info("PP GROUP RECV_DICT START")
         intermediate_tensors = None
         if not get_pp_group().is_first_rank:
             intermediate_tensors = IntermediateTensors(
                 get_pp_group().recv_tensor_dict())
+        logger.info("PP GROUP RECV_DICT DONE")
 
         logger.info("EXECUTE_MODEL START")
         output = self.model_runner.execute_model(
