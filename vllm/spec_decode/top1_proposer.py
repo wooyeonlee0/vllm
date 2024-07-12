@@ -8,6 +8,9 @@ from vllm.spec_decode.interfaces import (SpeculativeProposals,
                                          SpeculativeProposer)
 from vllm.spec_decode.proposer_worker_base import ProposerWorkerBase
 from vllm.spec_decode.util import sampler_output_to_torch
+from vllm.logger import init_logger
+
+logger = init_logger(__name__)
 
 
 class Top1Proposer(SpeculativeProposer):
@@ -92,6 +95,9 @@ class Top1Proposer(SpeculativeProposer):
             # If no sequences can be speculated, set sampler output to None.
             maybe_sampler_output = None
             transposed = False
+
+        if maybe_sampler_output is None:
+            logger.info("sampler output is None")
 
         # Combine speculative- and non-speculative sequences into the same
         # representation.
