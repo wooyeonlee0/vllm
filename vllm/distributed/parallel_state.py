@@ -503,6 +503,7 @@ class GroupCoordinator:
             # `metadata_list` lives in CPU memory.
             # `broadcast_object_list` has serialization & deserialization,
             # all happening on CPU. Therefore, we can use the CPU group.
+            logger.info(f"broadcast_tensor_dict {metadata_list=}, {src=}")
             self.broadcast_object(metadata_list, src=src)
             async_handles = []
             for tensor in tensor_list:
@@ -527,6 +528,7 @@ class GroupCoordinator:
 
         else:
             metadata_list = self.broadcast_object(None, src=src)
+            logger.info(f"broadcast_tensor_dict {metadata_list=}, {src=}")
             tensor_dict = {}
             async_handles = []
             for key, value in metadata_list:

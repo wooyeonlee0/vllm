@@ -305,8 +305,10 @@ class OpenVINOWorker(LoraNotSupportedWorkerBase):
                 "num_seq_groups": num_seq_groups,
                 "blocks_to_copy": execute_model_req.blocks_to_copy,
             }
+            logger.info("CALL BROADCAST_TENSOR_DICT")
             broadcast_tensor_dict(data, src=0)
         else:
+            logger.info("CALL BROADCAST_TENSOR_DICT")
             data = broadcast_tensor_dict(src=0)
             num_seq_groups = data["num_seq_groups"]
             blocks_to_copy = data["blocks_to_copy"]

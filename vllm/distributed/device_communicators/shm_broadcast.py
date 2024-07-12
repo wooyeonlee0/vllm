@@ -353,7 +353,7 @@ class MessageQueue:
                 # (1) not written
                 # (2) read by all readers
 
-                logger.info(f"{metadata_buffer.tolist()=}")
+                logger.info(f"WRITE1 {metadata_buffer.tolist()=}")
 
                 # mark the block as not written
                 metadata_buffer[0] = 0
@@ -373,7 +373,7 @@ class MessageQueue:
                 metadata_buffer[0] = 1
                 self.current_idx = (self.current_idx +
                                     1) % self.buffer.max_chunks
-                logger.info(f"{metadata_buffer.tolist()=}")
+                logger.info(f"WRITE2 {metadata_buffer.tolist()=}")
                 break
 
     @contextmanager
@@ -407,7 +407,7 @@ class MessageQueue:
 
                     continue
 
-                logger.info(f"{metadata_buffer.tolist()=}")
+                logger.info(f"READ1 {metadata_buffer.tolist()=}")
 
                 # found a block that is not read by this reader
                 # let caller read from the buffer
@@ -420,7 +420,7 @@ class MessageQueue:
                 self.current_idx = (self.current_idx +
                                     1) % self.buffer.max_chunks
 
-                logger.info(f"{metadata_buffer.tolist()=}")
+                logger.info(f"READ2 {metadata_buffer.tolist()=}")
                 break
 
 
