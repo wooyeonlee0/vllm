@@ -354,7 +354,6 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         output = self._run_speculative_decoding_step(execute_model_req,
                                                    num_lookahead_slots)
         logger.info("spec step done")
-        exit -1
         return output
 
         no_draft_tokens = False
