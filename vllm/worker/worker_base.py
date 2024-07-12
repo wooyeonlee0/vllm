@@ -269,6 +269,7 @@ class LocalOrDistributedWorkerBase(WorkerBase):
 
         # If there is no input, we don't need to execute the model.
         if worker_input.num_seq_groups == 0:
+            logger.info("RETURN NO INPUT")
             return []
 
         logger.info("PP GROUP RECV_DICT START")
