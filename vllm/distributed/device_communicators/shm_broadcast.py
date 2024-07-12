@@ -353,9 +353,6 @@ class MessageQueue:
                 # (1) not written
                 # (2) read by all readers
 
-                written_flag = metadata_buffer[0]
-                read_flags = metadata_buffer[1:]
-                logger.info(f"{written_flag=}, {read_flags.tolist()=}")
                 logger.info(f"{metadata_buffer.tolist()=}")
 
                 # mark the block as not written
@@ -376,6 +373,7 @@ class MessageQueue:
                 metadata_buffer[0] = 1
                 self.current_idx = (self.current_idx +
                                     1) % self.buffer.max_chunks
+                logger.info(f"{metadata_buffer.tolist()=}")
                 break
 
     @contextmanager
@@ -409,9 +407,6 @@ class MessageQueue:
 
                     continue
 
-                written_flag = metadata_buffer[0]
-                read_flags = metadata_buffer[1:]
-                logger.info(f"{written_flag=}, {read_flags.tolist()=}")
                 logger.info(f"{metadata_buffer.tolist()=}")
 
                 # found a block that is not read by this reader
@@ -424,7 +419,10 @@ class MessageQueue:
                 metadata_buffer[self.local_reader_rank + 1] = 1
                 self.current_idx = (self.current_idx +
                                     1) % self.buffer.max_chunks
+
+                logger.info(f"{metadata_buffer.tolist()=}")
                 break
+
 
     def enqueue(self, obj):
         assert self._is_writer, "Only writers can enqueue"
