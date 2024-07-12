@@ -355,8 +355,8 @@ class MessageQueue:
 
                 written_flag = metadata_buffer[0]
                 read_flags = metadata_buffer[1:]
-                logger.info(f"{written_flag=}, {read_flags=}")
-                logger.info(f"{metadata_buffer=}")
+                logger.info(f"{written_flag=}, {read_flags.tolist()=}")
+                logger.info(f"{metadata_buffer.tolist()=}")
 
                 # mark the block as not written
                 metadata_buffer[0] = 0
@@ -411,8 +411,8 @@ class MessageQueue:
 
                 written_flag = metadata_buffer[0]
                 read_flags = metadata_buffer[1:]
-                logger.info(f"{written_flag=}, {read_flags=}")
-                logger.info(f"{metadata_buffer=}")
+                logger.info(f"{written_flag=}, {read_flags.tolist()=}")
+                logger.info(f"{metadata_buffer.tolist()=}")
 
                 # found a block that is not read by this reader
                 # let caller read from the buffer
