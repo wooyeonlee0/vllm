@@ -10,10 +10,13 @@ from vllm.spec_decode.interfaces import (SpeculativeProposals,
 from vllm.spec_decode.util import (nvtx_range, sampler_output_to_torch,
                                    split_batch_by_proposal_len)
 from vllm.worker.worker_base import WorkerBase
+from vllm.logger import init_logger
 
 SeqId = int
 TargetSeqId = int
 TokenId = int
+
+logger = init_logger(__name__)
 
 
 class BatchExpansionTop1Scorer(SpeculativeScorer):
@@ -77,9 +80,13 @@ class BatchExpansionTop1Scorer(SpeculativeScorer):
              proposal_lens_list=proposal_lens_list,
          )
 
+        logger.info('scorer_worker.execute_model start')
+
         target_sampler_output = self._scorer_worker.execute_model(
             execute_model_req=execute_model_req.clone(
                 seq_group_metadata_list=target_seq_group_metadata_list))
+
+        logger.info('scorer_worker.execute_model end')
         assert len(target_sampler_output) == 1, "expected single-step output"
         target_sampler_output = target_sampler_output[0]
 

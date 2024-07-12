@@ -261,7 +261,11 @@ class LocalOrDistributedWorkerBase(WorkerBase):
                 self.model_runner.
                 make_model_input_from_broadcasted_tensor_dict(broadcast_data))
 
+        logger.info("EXECUTE_WORKER START")
+
         self.execute_worker(worker_input)
+
+        logger.info("EXECUTE_WORKER DONE")
 
         # If there is no input, we don't need to execute the model.
         if worker_input.num_seq_groups == 0:
