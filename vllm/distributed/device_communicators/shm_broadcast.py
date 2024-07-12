@@ -280,6 +280,8 @@ class MessageQueue:
             self.remote_sync_socket.connect(
                 f"tcp://{handle.connect_ip}:{handle.remote_sync_port}")
 
+        logger.info(f"{self._is_local_reader=}, {self._is_remote_reader}")
+
         return self
 
     def wait_until_ready(self):
