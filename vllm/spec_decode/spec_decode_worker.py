@@ -347,9 +347,9 @@ class SpecDecodeWorker(LoraNotSupportedWorkerBase):
         disable_speculation = num_lookahead_slots == 0 or len(
             execute_model_req.seq_group_metadata_list) == 0 or disable_all_speculation
 
-        if disable_all_speculation:
+        if disable_speculation:
             return self._run_no_spec(execute_model_req,
-                                skip_proposer=disable_all_speculation)
+                                     skip_proposer=disable_all_speculation)
         logger.info("spec step start")
         output = self._run_speculative_decoding_step(execute_model_req,
                                                    num_lookahead_slots)
