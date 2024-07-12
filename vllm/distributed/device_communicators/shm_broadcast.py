@@ -168,6 +168,7 @@ class MessageQueue:
         self.n_local_reader = n_local_reader
         n_remote_reader = n_reader - n_local_reader
         self.n_remote_reader = n_remote_reader
+        logger.info(f"{n_local_reader=}, {n_remote_reader=}")
 
         if connect_ip is None:
             connect_ip = get_ip()
